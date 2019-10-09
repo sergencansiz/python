@@ -17,7 +17,7 @@ class_object = {0 : 'background' , 1 : 'objectClass1' , 2:'objectClass2'}
 train_set = createDataset()
 
 # Makes data ready for use
-train_set.prepare_dataset('pizza/annots' , class_object , test_size=30)
+train_set.prepare_dataset('path/to/annotation/files' , class_object , test_size=30)
 
 # Assing train and test data
 (trainY , trainX) , (testY , testX ) = (train_set.trainY , train_set.trainX ) , (train_set.testY , train_set.testX ) 
