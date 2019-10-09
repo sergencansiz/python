@@ -1,4 +1,4 @@
-## Creating Train and Test Datasets from Annotaion Files
+## Creating Train and Test Datasets from Annotation Files
 
 Required libraries; 
 
