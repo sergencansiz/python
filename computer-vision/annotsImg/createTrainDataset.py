@@ -1,4 +1,11 @@
-class DatasetObject(object):
+#Crate Dataset Object
+from os import listdir
+import numpy as np
+import xml.etree.ElementTree as ET
+import cv2
+
+
+class createDataset(object):
     
     def __init__(self, class_map=None):
         self._image_ids = []
@@ -10,7 +17,7 @@ class DatasetObject(object):
         # Background is always the first class
         self.class_info = [{"source": "", "id": 0, "name": "BG"}]
         self.source_class_ids = {}
-        
+            
     def add_image_info(self , image_array , image_path , image_id , object_id , class_name , class_id):
         
         image_info_ = {'object_id': image_id,
@@ -19,11 +26,11 @@ class DatasetObject(object):
                        'image_array': image_array,
                        'class_id' : class_id}
         self.image_info.append(image_info_)
-    
-    def parse_xml(filename):
+
+    def parse_xml(self,filer):
         boxes = list()
         names = list()
-        root = ET.parse(filename).getroot() 
+        root = ET.parse(filer).getroot() 
         for box in root.findall('.//object'):
             xmin = int(box.find('.//bndbox/xmin').text)
             xmax = int(box.find('.//bndbox/xmax').text)
@@ -38,13 +45,15 @@ class DatasetObject(object):
         path = root.find('.//path').text
         filename = root.find('filename').text
         filename = filename[:-4]
+
         return boxes, width, height , names , path , filename
-    
+
     def get_image_arrays(self , annot_path , class_object):
         
         count = 0
         for i in listdir('pizza/annots'):
-            parsed = parse_xml(annot_path +'/' + i)
+            patt = annot_path +'/' + i
+            parsed = self.parse_xml(patt)
             img = cv2.imread(parsed[4])
             for wh in range(0 , len(parsed[0])):
                 crop_img = img[parsed[0][wh][1]:parsed[0][wh][3] , parsed[0][wh][0]:parsed[0][wh][2] ]
@@ -65,9 +74,8 @@ class DatasetObject(object):
         self.get_image_arrays(path , class_object)
         
         img_arrays = np.array([d['image_array'] for d in self.image_info if 'image_array' in d])
-        class_name = np.array([d['object_class'] for d in self.image_info if 'object_class' in d])
+        class_names = np.array([d['object_class'] for d in self.image_info if 'object_class' in d])
         class_ids  = np.array([d['class_id'] for d in self.image_info if 'class_id' in d])
-        
         all_idx = range(0 , len(img_arrays))
         test_idx = np.random.choice(np.arange(len(img_arrays)), test_size, replace=False)
         train_idx = np.delete(all_idx , test_idx) 
