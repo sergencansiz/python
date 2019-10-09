@@ -1,4 +1,4 @@
-#Crate Dataset Object
+############# Crate Dataset Object
 from os import listdir
 import numpy as np
 import xml.etree.ElementTree as ET
@@ -8,15 +8,11 @@ import cv2
 class createDataset(object):
     
     def __init__(self, class_map=None):
-        self._image_ids = []
         self.image_info = []
         self.trainX = []
         self.trainY = []
         self.testX = []
         self.testY = []
-        # Background is always the first class
-        self.class_info = [{"source": "", "id": 0, "name": "BG"}]
-        self.source_class_ids = {}
             
     def add_image_info(self , image_array , image_path , image_id , object_id , class_name , class_id):
         
@@ -51,7 +47,7 @@ class createDataset(object):
     def get_image_arrays(self , annot_path , class_object):
         
         count = 0
-        for i in listdir('pizza/annots'):
+        for i in listdir(annot_path):
             patt = annot_path +'/' + i
             parsed = self.parse_xml(patt)
             img = cv2.imread(parsed[4])
