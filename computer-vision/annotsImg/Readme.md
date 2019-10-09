@@ -1,7 +1,7 @@
 **Creating Train and Test Datasets from Annotaion Files**
 
 
-```
+```py
 from createDataset import createDataset as cd 
 
 class_object = {0 : 'pizza' , 1 : 'background'}
