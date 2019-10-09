@@ -1,6 +1,6 @@
-**Creating Train and Test Datasets from Annotaion Files**
+## Creating Train and Test Datasets from Annotaion Files
 
-Requeired libraries; 
+Required libraries; 
 
 - OpenCV
 - Numpy
